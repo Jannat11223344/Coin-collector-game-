@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Collector Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Coin Collector Game</h1>
+        <p>Coins Collected: <span id="coins">0</span></p>
+        <button id="collect-coin">Collect Coin</button>
+        <p id="timer">Next reset in: 24:00:00</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
