@@ -3,7 +3,7 @@ let coins = 0;
 const maxCoinsPerDay = 100;
 
 // Check reset from localStorage
-const lastReset = localStorage.getItem('lastReset') || Date.now();
+const lastReset = parseInt(localStorage.getItem('lastReset')) || Date.now();
 if (Date.now() - lastReset > 24 * 60 * 60 * 1000) {
     coins = 0; // Reset daily limit
     localStorage.setItem('lastReset', Date.now());
