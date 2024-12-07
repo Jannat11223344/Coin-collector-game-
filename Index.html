@@ -7,11 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>Coin Collector Game</h1>
-        <p>Coins Collected: <span id="coins">0</span></p>
-        <button id="collect-coin">Collect Coin</button>
-        <p id="timer">Next reset in: 24:00:00</p>
+    <div class="container">
+        <h1>Welcome to Coin Collector</h1>
+        <p>Tap to collect coins. You can collect up to 100 coins daily!</p>
+        <div class="game">
+            <button id="collectCoin">Collect Coin</button>
+            <p id="coinsCollected">Coins Collected: 0</p>
+            <p id="nextReset">Next Reset: <span id="resetTimer">24:00:00</span></p>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
