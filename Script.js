@@ -1,35 +1,46 @@
+// Game Logic
 let coins = 0;
-let lastCollected = localStorage.getItem("lastCollected") || Date.now();
-let collectedCoins = Number(localStorage.getItem("collectedCoins")) || 0;
+const maxCoinsPerDay = 100;
 
-document.getElementById("coins").innerText = collectedCoins;
+// Check reset from localStorage
+const lastReset = localStorage.getItem('lastReset') || Date.now();
+if (Date.now() - lastReset > 24 * 60 * 60 * 1000) {
+    coins = 0; // Reset daily limit
+    localStorage.setItem('lastReset', Date.now());
+} else {
+    coins = parseInt(localStorage.getItem('coins') || '0');
+}
 
-document.getElementById("collect-coin").addEventListener("click", () => {
-    if (coins < 100) {
+// Update UI
+const coinDisplay = document.getElementById('coinsCollected');
+const resetTimer = document.getElementById('resetTimer');
+updateUI();
+
+// Collect coin event
+document.getElementById('collectCoin').addEventListener('click', () => {
+    if (coins < maxCoinsPerDay) {
         coins++;
-        collectedCoins++;
-        localStorage.setItem("collectedCoins", collectedCoins);
-        document.getElementById("coins").innerText = collectedCoins;
+        localStorage.setItem('coins', coins);
+        updateUI();
     } else {
-        alert("You reached the 100 coin limit. Wait for the timer to reset!");
+        alert('Daily limit reached! Please wait for the next reset.');
     }
 });
 
-function updateTimer() {
-    const now = Date.now();
-    const diff = now - lastCollected;
-
-    const hours = 24 - Math.floor(diff / (1000 * 60 * 60)) % 24;
-    const minutes = 59 - Math.floor(diff / (1000 * 60)) % 60;
-    const seconds = 59 - Math.floor(diff / 1000) % 60;
-
-    if (diff >= 24 * 60 * 60 * 1000) {
-        coins = 0;
-        lastCollected = now;
-        localStorage.setItem("lastCollected", lastCollected);
-    }
-
-    document.getElementById("timer").innerText = `Next reset in: ${hours}:${minutes}:${seconds}`;
+// Update UI function
+function updateUI() {
+    coinDisplay.textContent = `Coins Collected: ${coins}`;
+    const timeLeft = calculateTimeLeft();
+    resetTimer.textContent = `${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`;
 }
 
-setInterval(updateTimer, 1000);
+// Calculate time left for reset
+function calculateTimeLeft() {
+    const now = Date.now();
+    const resetTime = new Date(parseInt(localStorage.getItem('lastReset'))).getTime() + 24 * 60 * 60 * 1000;
+    const diff = resetTime - now;
+    const hours = Math.floor(diff / (1000 * 60 * 60)).toString().padStart(2, '0');
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+    return { hours, minutes, seconds };
+}
